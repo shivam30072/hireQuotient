@@ -1,0 +1,13 @@
+*{
+  margin: 0;
+  padding: 0;
+ box-sizing: border-box; 
+}
+
+.inputStyles{
+  padding: 8px 12px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  border: none;
+}
