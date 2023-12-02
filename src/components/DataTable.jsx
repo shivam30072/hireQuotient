@@ -27,16 +27,16 @@ const DataTable = ({
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      if (search !== "") {
-        handleSearch();
-        setSearch("");
-      }
+      handleSearch();
+      setSearch("");
     }
   };
 
   useEffect(() => {
     // should be using debouncing but api is not that heavy so I think its fine
-    handleSearch();
+    if (search !== "") {
+      handleSearch();
+    }
   }, [search]);
 
   const handleSearch = async () => {
@@ -182,28 +182,41 @@ const DataTable = ({
               </Col>
             </Row>
           </div>
-          <Row
-            style={{
-              background: "#ccc",
-              margin: "4px 0px",
-              borderRadius: "4px",
-            }}
-          >
-            {currentPageData.map((item) => (
-              <SingleRow
-                id={id}
-                edit={edit}
-                handleEdit={handleEdit}
-                key={item.id}
-                details={item}
-                handleDelete={handleDelete}
-                handleSaveEdit={handleSaveEdit}
-                setSelectedRows={setSelectedRows}
-                selectedRows={selectedRows}
-                allChecked={allChecked}
-              />
-            ))}
-          </Row>
+
+          {data.length === 0 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              No data available
+            </div>
+          ) : (
+            <Row
+              style={{
+                background: "#ccc",
+                margin: "4px 0px",
+                borderRadius: "4px",
+              }}
+            >
+              {currentPageData.map((item) => (
+                <SingleRow
+                  id={id}
+                  edit={edit}
+                  handleEdit={handleEdit}
+                  key={item.id}
+                  details={item}
+                  handleDelete={handleDelete}
+                  handleSaveEdit={handleSaveEdit}
+                  setSelectedRows={setSelectedRows}
+                  selectedRows={selectedRows}
+                  allChecked={allChecked}
+                />
+              ))}
+            </Row>
+          )}
         </div>
         <div
           style={{

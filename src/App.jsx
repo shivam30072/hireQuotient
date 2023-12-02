@@ -7,6 +7,7 @@ function App() {
   const [data, setData] = useState([]);
   const [currentPageData, setCurrentPageData] = useState([]);
   const [pageNo, setPageNo] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const changePage = (page, prevOrNext = 0) => {
     const copyData = data.slice();
@@ -40,28 +41,44 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
+        setLoading(true);
         let res = await fetch(URL);
         res = await res.json();
 
         setData(res);
         setCurrentPageData(res.slice(0, 10));
-        console.log(res);
       } catch (error) {
         console.log("error occured", error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchData();
   }, []);
   return (
     <div style={{ background: "#ccc", minHeight: "100vh" }}>
-      <DataTable
-        setData={setData}
-        data={data}
-        currentPageData={currentPageData}
-        changePage={changePage}
-        setCurrentPageData={setCurrentPageData}
-        pageNo={pageNo}
-      />
+      {!loading ? (
+        <DataTable
+          loading={loading}
+          setData={setData}
+          data={data}
+          currentPageData={currentPageData}
+          changePage={changePage}
+          setCurrentPageData={setCurrentPageData}
+          pageNo={pageNo}
+        />
+      ) : (
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          loading...
+        </div>
+      )}
     </div>
   );
 }
